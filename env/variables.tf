@@ -10,7 +10,3 @@ variable "vpc_required" {}
 
 variable "environment" {}
 variable "request_id" {}
-
-variable "dxgw_id" {
-  default = ""
-}
