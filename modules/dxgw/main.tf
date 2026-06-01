@@ -4,11 +4,10 @@ resource "aws_dx_gateway" "score_dxgw" {
 
   tags = {
     Name        = "score-dxgw-${var.environment}"
-    Project     = "aws-network-orchestrator"
     Environment = var.environment
-    Account     = "570864946772"
+    RequestId   = var.request_id
+    Project     = "aws-network-orchestrator"
     CostCenter  = "score-dev"
     Service     = "dxgw"
-    RequestId   = var.request_id
   }
 }
