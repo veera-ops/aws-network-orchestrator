@@ -1,0 +1,10 @@
+{
+  "action": "create_network",
+  "account_id": "570864946772",
+  "account_name": "score-dev",
+  "region": "us-east-1",
+  "vpc_required": true,
+  "vpc_cidr": "10.60.0.0/16",
+  "environment": "dev",
+  "request_id": "NET-001"
+}
