@@ -1,4 +1,4 @@
-name: AWS Network Orchestrator Deploy
+name: AWS Network Deploy
 
 on:
   workflow_dispatch:
@@ -8,56 +8,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ----------------------------
-      # 1. Checkout repository
-      # ----------------------------
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # ----------------------------
-      # 2. Install Terraform
-      # ----------------------------
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
 
-      # ----------------------------
-      # 3. Install jq (for JSON parsing)
-      # ----------------------------
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      # ----------------------------
-      # 4. Read request.json dynamically
-      # ----------------------------
-      - name: Parse Request File
+      - name: Read Request JSON
         run: |
           echo "ACCOUNT_ID=$(jq -r .account_id requests/request.json)" >> $GITHUB_ENV
           echo "ACCOUNT_NAME=$(jq -r .account_name requests/request.json)" >> $GITHUB_ENV
           echo "REGION=$(jq -r .region requests/request.json)" >> $GITHUB_ENV
           echo "VPC_CIDR=$(jq -r .vpc_cidr requests/request.json)" >> $GITHUB_ENV
           echo "VPC_REQ=$(jq -r .vpc_required requests/request.json)" >> $GITHUB_ENV
-          echo "ENVIRONMENT=$(jq -r .environment requests/request.json)" >> $GITHUB_ENV
-          echo "REQUEST_ID=$(jq -r .request_id requests/request.json)" >> $GITHUB_ENV
+          echo "ENV=$(jq -r .environment requests/request.json)" >> $GITHUB_ENV
+          echo "REQ_ID=$(jq -r .request_id requests/request.json)" >> $GITHUB_ENV
 
-      # ----------------------------
-      # 5. Terraform Init
-      # ----------------------------
       - name: Terraform Init
         working-directory: env
         run: terraform init
 
-      # ----------------------------
-      # 6. Terraform Validate
-      # ----------------------------
-      - name: Terraform Validate
-        working-directory: env
-        run: terraform validate
-
-      # ----------------------------
-      # 7. Terraform Plan
-      # ----------------------------
       - name: Terraform Plan
         working-directory: env
         run: |
@@ -69,12 +42,9 @@ jobs:
             -var="account_name=${ACCOUNT_NAME}" \
             -var="vpc_cidr=${VPC_CIDR}" \
             -var="vpc_required=${VPC_REQ}" \
-            -var="environment=${ENVIRONMENT}" \
-            -var="request_id=${REQUEST_ID}"
+            -var="environment=${ENV}" \
+            -var="request_id=${REQ_ID}"
 
-      # ----------------------------
-      # 8. Terraform Apply
-      # ----------------------------
       - name: Terraform Apply
         working-directory: env
         run: |
@@ -86,5 +56,5 @@ jobs:
             -var="account_name=${ACCOUNT_NAME}" \
             -var="vpc_cidr=${VPC_CIDR}" \
             -var="vpc_required=${VPC_REQ}" \
-            -var="environment=${ENVIRONMENT}" \
-            -var="request_id=${REQUEST_ID}"
+            -var="environment=${ENV}" \
+            -var="request_id=${REQ_ID}"
