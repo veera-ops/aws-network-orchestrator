@@ -3,7 +3,6 @@ module "dxgw" {
 
   environment = var.environment
   request_id  = var.request_id
-  tags        = local.tags
 }
 
 module "tgw" {
@@ -33,7 +32,7 @@ module "vpc" {
 module "association" {
   source = "../modules/association"
 
-  dxgw_id      = module.dxgw.dxgw_id
-  tgw_id       = module.tgw.tgw_id
-  vpc_cidr     = var.vpc_cidr
+  dxgw_id  = module.dxgw.dxgw_id
+  tgw_id   = module.tgw.tgw_id
+  vpc_cidr = var.vpc_cidr
 }
