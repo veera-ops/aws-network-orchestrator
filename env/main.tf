@@ -1,7 +1,9 @@
 module "dxgw" {
   source = "../modules/dxgw"
+
   environment = var.environment
   request_id  = var.request_id
+  tags        = local.tags
 }
 
 module "tgw" {
@@ -12,6 +14,7 @@ module "tgw" {
   region       = var.region
   environment  = var.environment
   request_id   = var.request_id
+  tags         = local.tags
 }
 
 module "vpc" {
@@ -24,12 +27,13 @@ module "vpc" {
   vpc_required = var.vpc_required
   environment  = var.environment
   request_id   = var.request_id
+  tags         = local.tags
 }
 
 module "association" {
   source = "../modules/association"
 
-  dxgw_id  = module.dxgw.dxgw_id
-  tgw_id   = module.tgw.tgw_id
-  vpc_cidr = var.vpc_cidr
+  dxgw_id      = module.dxgw.dxgw_id
+  tgw_id       = module.tgw.tgw_id
+  vpc_cidr     = var.vpc_cidr
 }
