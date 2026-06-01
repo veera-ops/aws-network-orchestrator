@@ -1,42 +1,13 @@
-name: AWS Network Provisioner
-
-on:
-  workflow_dispatch:
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
-
-      - name: Read Request JSON
-        run: |
-          echo "ACCOUNT_ID=$(jq -r .account_id requests/request.json)" >> $GITHUB_ENV
-          echo "ACCOUNT_NAME=$(jq -r .account_name requests/request.json)" >> $GITHUB_ENV
-          echo "REGION=$(jq -r .region requests/request.json)" >> $GITHUB_ENV
-          echo "VPC_CIDR=$(jq -r .vpc_cidr requests/request.json)" >> $GITHUB_ENV
-          echo "VPC_REQ=$(jq -r .vpc_required requests/request.json)" >> $GITHUB_ENV
-          echo "ENV=$(jq -r .environment requests/request.json)" >> $GITHUB_ENV
-          echo "REQ_ID=$(jq -r .request_id requests/request.json)" >> $GITHUB_ENV
-
-      - name: Terraform Init
-        run: terraform init
-        working-directory: env
-
-      - name: Terraform Apply
-        run: |
-          terraform apply -auto-approve \
-            -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-            -var="aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
-            -var="region=${REGION}" \
-            -var="account_id=${ACCOUNT_ID}" \
-            -var="account_name=${ACCOUNT_NAME}" \
-            -var="vpc_cidr=${VPC_CIDR}" \
-            -var="vpc_required=${VPC_REQ}" \
-            -var="environment=${ENV}" \
-            -var="request_id=${REQ_ID}" \
-            -var="dxgw_id=central-dxgw-id"
-        working-directory: env
+- name: Terraform Apply
+  run: |
+    terraform apply -auto-approve \
+      -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+      -var="aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+      -var="region=${REGION}" \
+      -var="account_id=${ACCOUNT_ID}" \
+      -var="account_name=${ACCOUNT_NAME}" \
+      -var="vpc_cidr=${VPC_CIDR}" \
+      -var="vpc_required=${VPC_REQ}" \
+      -var="environment=${ENV}" \
+      -var="request_id=${REQ_ID}"
+  working-directory: env
