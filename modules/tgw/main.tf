@@ -3,12 +3,11 @@ resource "aws_ec2_transit_gateway" "score_tgw" {
 
   tags = {
     Name        = "score-tgw-${var.account_name}-${var.region}"
-    Project     = "aws-network-orchestrator"
-    Environment = var.environment
     Account     = var.account_id
     Region      = var.region
+    Environment = var.environment
+    RequestId   = var.request_id
     CostCenter  = "score-dev"
     Service     = "tgw"
-    RequestId   = var.request_id
   }
 }
