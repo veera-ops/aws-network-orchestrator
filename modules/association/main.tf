@@ -3,8 +3,4 @@ resource "aws_dx_gateway_association" "score_assoc" {
   associated_gateway_id = var.tgw_id
 
   allowed_prefixes = [var.vpc_cidr]
-
-  tags = merge(var.tags, {
-    Service = "dxgw-association"
-  })
 }
