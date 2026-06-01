@@ -3,13 +3,4 @@ resource "aws_dx_gateway_association" "score_assoc" {
   associated_gateway_id = var.tgw_id
 
   allowed_prefixes = [var.vpc_cidr]
-
-  tags = {
-    Name        = "score-dxgw-tgw-${var.account_name}"
-    Account     = var.account_id
-    Environment = var.environment
-    RequestId   = var.request_id
-    CostCenter  = "score-dev"
-    Service     = "dxgw-association"
-  }
 }
