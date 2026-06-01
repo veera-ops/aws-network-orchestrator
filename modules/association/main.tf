@@ -6,11 +6,10 @@ resource "aws_dx_gateway_association" "score_assoc" {
 
   tags = {
     Name        = "score-dxgw-tgw-${var.account_name}"
-    Project     = "aws-network-orchestrator"
-    Environment = var.environment
     Account     = var.account_id
+    Environment = var.environment
+    RequestId   = var.request_id
     CostCenter  = "score-dev"
     Service     = "dxgw-association"
-    RequestId   = var.request_id
   }
 }
