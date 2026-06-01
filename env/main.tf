@@ -29,11 +29,7 @@ module "vpc" {
 module "association" {
   source = "../modules/association"
 
-  dxgw_id     = module.dxgw.dxgw_id
-  tgw_id      = module.tgw.tgw_id
-  vpc_cidr    = var.vpc_cidr
-  account_id  = var.account_id
-  account_name = var.account_name
-  environment  = var.environment
-  request_id   = var.request_id
+  dxgw_id  = module.dxgw.dxgw_id
+  tgw_id   = module.tgw.tgw_id
+  vpc_cidr = var.vpc_cidr
 }
